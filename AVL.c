@@ -40,7 +40,8 @@ struct Node* insertNode(struct Node* node,int key)
     {
         return createNode(key);
     }
-    else if(key<node->data)
+
+    if(key<node->data)
     {
         node->left = insertNode(node->left,key);
     }
@@ -52,21 +53,25 @@ struct Node* insertNode(struct Node* node,int key)
     node->height = 1 + max(getHeight(node->left),getHeight(node->right)) ;
     int bf = getBalanceFactor(node);
 
+    // Left Left Case 
     if(bf>1 && key<node->left->data)
     {
         return rightRotate(node);
     }
+    // Right Right Case 
     else if(bf< -1 && key > node->right->data)
     {
         return leftRotate(node);
     }
+    // Left Right Case  
     else if(bf>1 && node->left!=NULL && key>node->left->data){
-        node->left = leftRotate(node);
+        node->left = leftRotate(node->left);
         return rightRotate(node);
     }
+    // Right Left Case  
     else if(bf< -1 && node->right!=NULL && key<node->right->data)
     {
-        node->right = rightRotate(node);
+        node->right = rightRotate(node->right);
         return leftRotate(node);
     }
 
